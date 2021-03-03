@@ -29,14 +29,19 @@ $(document).ready(function(){
 
     //chamando as funções em ordem
     CriarBombas();
-    AdaptaBordas()
+    AdaptaBordas();
+
+    $('.slot').each(function(){
+        CalculaBombasAoRedor($(this).attr('id'));
+        console.log("clicou")
+    });
 
 
     function CriarBombas(){
         for(var i=0;i<colNum;i++){
             var bombaPos = (Math.floor(Math.random()*(colNum*linhaNum)));
             console.log(bombaPos);
-            $('.celula_'+bombaPos).addClass('bomba');
+            $('.celula_'+bombaPos).addClass('bomba').attr('qtd-bombas','bomba');
         }
     }
 
@@ -66,7 +71,7 @@ $(document).ready(function(){
         }
 
         //encontrando as quinas do tabuleiro
-        $('.Celula').each(function(){
+        $('.slot').each(function(){
             
             if($(this).hasClass('cima-borda') && $(this).hasClass('esquerda-borda')){
               $(this).removeClass('cima-borda esquerda-borda').addClass('cima-esquerda-quina');
@@ -80,7 +85,7 @@ $(document).ready(function(){
           });
     }
 
-    function EncontrarCelulasVizinhas(){
+     function EncontrarCelulasVizinhas(id){
       //devido ao fatos de que o campo minado 
       //orecisa verificar se uma celula possui alguma 
       //bomba emalguma de sua 8 celulas vizinhas
@@ -89,41 +94,39 @@ $(document).ready(function(){
 
       var celulasVerificaveis = [],
 
-      posCelulaClicada = parseInt($(this).attr('id')),
-      colNum = parseInt(colNum);
-
+      posCelulaClicada = parseInt(id);
       //verifica se na celula clicada não é uma bomba, senão jogo acaba
-        if(!$(this).hasClass('bomba')){
+        if(!$("#"+id).hasClass('bomba')){
             //topo esquerdo, apenas 3 celulas verificaveis
-            if($(this).hasClass('cima-esquerda-quina')){
+            if($("#"+id).hasClass('cima-esquerda-quina')){
             celulasVerificaveis.push(
                 posCelulaClicada+1,
                 posCelulaClicada+colNum,
                 posCelulaClicada+colNum+1
             );
             //topo direito, apenas 3 celulas verificaveis
-            }else if($(this).hasClass('cima-direita-quina')){
+            }else if($("#"+id).hasClass('cima-direita-quina')){
             celulasVerificaveis.push(
                 posCelulaClicada-1, 
                 posCelulaClicada+colNum,
                 posCelulaClicada+colNum-1
             );
             //fundo direito, apenas 3 celulas verificaveis
-            }else if($(this).hasClass('fundo-direita-quina')){
+            }else if($("#"+id).hasClass('fundo-direita-quina')){
             celulasVerificaveis.push(
                 posCelulaClicada-1, 
                 posCelulaClicada-colNum,
                 posCelulaClicada-colNum-1
             );
             //fundo esquerdo, apenas 3 celulas verificaveis
-            }else if($(this).hasClass('fundo-esquerda-quina')){
+            }else if($("#"+id).hasClass('fundo-esquerda-quina')){
             celulasVerificaveis.push(
                 posCelulaClicada+1, 
                 posCelulaClicada-colNum,
                 posCelulaClicada-colNum+1
             );
             //linha da borda de cima, 5 celulas verificaveis
-            }else if($(this).hasClass('cima-borda')){
+            }else if($("#"+id).hasClass('cima-borda')){
             var fundoCelula = posCelulaClicada+colNum;
             celulasVerificaveis.push(
                 posCelulaClicada-1,
@@ -132,7 +135,8 @@ $(document).ready(function(){
                 fundoCelula-1,
                 fundoCelula+1
             );
-            }else if($(this).hasClass('direita-borda')){
+            //linha da borda da direita, 5 celulas verificaveis
+            }else if($("#"+id).hasClass('direita-borda')){
             var esquerdaCelula = posCelulaClicada-1;
             celulasVerificaveis.push(
                 posCelulaClicada+colNum,
@@ -141,7 +145,8 @@ $(document).ready(function(){
                 esquerdaCelula+colNum, 
                 esquerdaCelula-colNum
             );
-            }else if($(this).hasClass('esquerda-borda')){
+            //linha da borda da esquerda, 5 celulas verificaveis
+            }else if($("#"+id).hasClass('esquerda-borda')){
             var direitaCelula = posCelulaClicada + 1;
             celulasVerificaveis.push(
                 posCelulaClicada+colNum,
@@ -150,7 +155,8 @@ $(document).ready(function(){
                 direitaCelula+colNum,
                 direitaCelula-colNum
             );
-            }else if($(this).hasClass('fundo-borda')){
+            //linha da borda do fundo, 5 celulas verificaveis
+            }else if($("#"+id).hasClass('fundo-borda')){
             var cimaCelula = posCelulaClicada - colNum;
             celulasVerificaveis.push(
                 posCelulaClicada+1,
@@ -159,6 +165,7 @@ $(document).ready(function(){
                 cimaCelula+1,
                 cimaCelula-1
             );
+            //agr a celula pode ser qualquer uma que não as bordas
             }else {
             var direitaCelula = posCelulaClicada+1,
                 esquerdaCelula = posCelulaClicada-1,
@@ -180,6 +187,22 @@ $(document).ready(function(){
         }
         return celulasVerificaveis;
 
+    }
+
+    function CalculaBombasAoRedor(id){
+        var contBombas = 0;
+        var celulasVerificaveis = EncontrarCelulasVizinhas(id);
+        
+        if(!$(this).hasClass('bomba')){
+            console.log(celulasVerificaveis);
+
+          for(var i=0; i<celulasVerificaveis.length; i++){
+            if($('.celula_'+celulasVerificaveis[i]).hasClass('bomba')){
+                contBombas++;
+            }
+          }
+          $("#"+id).attr('data-warning', contBombas);
+        }
     }
 
 }
