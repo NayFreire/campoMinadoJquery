@@ -20,18 +20,12 @@ $(document).ready(function(){
     var bombPositions = new Array();
 
     for(var i=0; i<colNum; i++){
-        $('#matriz').append("<div class='linhas' >")
+        $('#matriz').append("<div class='linhas' id='linha"+i+"'>")
         for(var j=0; j<rowNum; j++){
-<<<<<<< HEAD
-            $('.linhas').append('<div id="'+counter+'" class="slot tile_'+counter+'"></div>');
+            $('#linha'+i).append('<div id="'+counter+'" class="slot tile_'+(j)+'"></div>');
             counter++;
-=======
-          $('.linhas').append('<div id="'+counter+'" class="slot tile_'+counter+'"></div>');
-          counter++;
-          
->>>>>>> 6dd75df9684d50073b755d7aab804bb661a48df5
         }
-        j=0;
+        
         $('#matriz').append("</div>")
     }
 

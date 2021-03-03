@@ -22,6 +22,20 @@ html, body{
 .slot{
     width: 50px;
     height: 50px;
-    border: solid 1px #000;
-    background-color: aquamarine;
+    background: #bdbdbd;
+    border-top: 2px solid #fff;
+    border-left: 2px solid #fff;
+    border-right: 2px solid #747474;
+    border-bottom: 2px solid #747474;
+}
+
+.slot:hover{
+    background: #bdbdbdc0;
+}
+
+.slot.clicked{
+    border-top: 2px solid #747474;
+    border-left: 2px solid #747474;
+    border-right: 2px solid #fff;
+    border-bottom: 2px solid #fff;
 }
