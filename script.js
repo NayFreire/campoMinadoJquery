@@ -24,16 +24,6 @@ $(document).ready(function(){
     var counter = 1;
     var bombPositions = new Array();
 
-    // for(var i=0; i<colNum; i++){
-    //     $('#matriz').append("<div class='linhas' >")
-    //     for(var j=0; j<rowNum; j++){
-    //         $('.linhas').append('<div id="'+counter+'" class="slot tile_'+counter+'"></div>');
-    //         counter++;
-    //     }
-    //     j=0;
-    //     $('#matriz').append("</div>")
-    // }
-
     CriarBombas();
 
     function CriarBombas(){
@@ -41,18 +31,8 @@ $(document).ready(function(){
         var vetorY = new Array();
         var coordenada = new Array();
         let i,j;
-        // for(i=0;i<=colNum;i++){
-        //     var posX = parseInt(Math.random()*colNum);
-        //     vetorX.push(posX);
 
-        // }
-        // for(j=0;j<=rowNum;j++){
-        //     var posY = parseInt(Math.random()*rowNum);
-        //     vetorY.push(posY);
-        // }
-        // bombPositions.push(vetorX,vetorY);
-        // console.log({bombPositions})
-
+        //* CRIANDO AS COORDENADAS PARA AS BOMBAS
         for(i=0;i<=colNum;i++){
             var posX = parseInt(Math.random()*colNum);
             var posY = parseInt(Math.random()*rowNum);
@@ -60,36 +40,37 @@ $(document).ready(function(){
             coordenada.push(posY)
             $('#'+posX+'-'+posY).addClass('bomba')
 
-            let naoRepete = VerificaTodos(bombPositions,coordenada)
+            //* VERIFICANDO SE A COORDENADA JÁ FOI SELECIONADA, PARA QUE NÃO SE REPITA
+            let naoRepete = VerificaTodos(bombPositions, coordenada)
 
-            if(naoRepete){
-                bombPositions.push(coordenada)            
-                coordenada = new Array();
+            if(naoRepete){ //* CASO NÃO SE REPITA
+                bombPositions.push(coordenada) //* INSIRA A COORDENADA NO ARRAY DE COORDENADAS          
+                coordenada = new Array(); //* E LIMPE O VETOR COORDENADA
             }
             else{
-                coordenada = new Array();
+                coordenada = new Array(); //* CASO CONTRÁRIO, APENAS LIMPE A COORDENADA
             }
         }
         console.log({bombPositions})
-        VerificaSeTemDezBombas(bombPositions)
+        VerificaSeTemDezBombas(bombPositions) //* SE, DURANTE A CRIAÇÃO DE COORDENADAS, FOR CRIADA UMA QUE SE REPETE, OUTRA SERÁ CRIADA E O ARRAY DE BOMBAS TERÁ MENOS DE 10 BOMBAS, ENTÃO É VERIFICADO SE FOI POSSÍVEL CRIAR 10 COORDENADAS 
 
-        function VerificaSeTemDezBombas(bombPositions){
+        function VerificaSeTemDezBombas(bombPositions){ //* 
             if(bombPositions.length == 10){
                 return true
             }
-            else{
-                let quantFaltaPara10 = 10 - bombPositions.length
+            else{ //* CASO NÃO TENHA SIDO POSSÍVEL
+                let quantFaltaPara10 = 10 - bombPositions.length //* É CALCULADO QUANTAS AINDA FALTAM PARA COMPLETAR 10 BOMBAS
 
-                for(i=0;i<=quantFaltaPara10;i++){
+                for(i=0;i<=quantFaltaPara10;i++){ //* E ESSE NÚMERO RESTANTE DE BOMBAS É CRIADA
                     var posX = parseInt(Math.random()*colNum);
                     var posY = parseInt(Math.random()*rowNum);
                     coordenada.push(posX);
                     coordenada.push(posY)
                     $('#'+posX+'-'+posY).addClass('bomba')
         
-                    let verifica = VerificaTodos(bombPositions, coordenada)
+                    let verifica = VerificaTodos(bombPositions, coordenada) //* EVITANDO, OBVIAMENTE, QUE HAJA REPETIÇÃO DE NOVAS COORDENADAS
         
-                    if(verifica){
+                    if(verifica){ //* E INSERINDO O QUE NÃO ESTÁ REPETIDO
                         bombPositions.push(coordenada)            
                         coordenada = new Array();
                     }
@@ -97,30 +78,19 @@ $(document).ready(function(){
             }
         }
 
-        function VerificaSeRepete(coordenada){
-            var count = bombPositions.length
-
-            if(JSON.stringify(coordenada)==JSON.stringify(bombPositions[count-1])){
-                // coordenada = new Array()
-                return false
-            }
-
-            return true
-        }
-
-        function VerificaTodos(bombPositions, coordenada){
+        function VerificaTodos(bombPositions, coordenada){ //* VERIFICANDO SE A COORDENADA JÁ FOI SELECIONADA, PARA QUE NÃO SE REPITA
             let igual = 0
             for(i=0;i<bombPositions.length;i++){
-                if(JSON.stringify(coordenada)==JSON.stringify(bombPositions[i])){
-                    igual++;
+                if(JSON.stringify(coordenada)==JSON.stringify(bombPositions[i])){ //*CASO UMA COORDENADA SEJA IGUAL OUTRA JÁ INSERIDA
+                    igual++; //* É GUARDADO O NÚMERO DE REPETIÇÕES QUE ESSA COORDENADA TEM
                 }
             }
 
-            if(igual > 0){
-                return false
+            if(igual > 0){ //* CASO TENHA MAIS DE ZERO REPETIÇÕES, 
+                return false //* É RETORNADO FALSO
             }
 
-            return true
+            return true //* CASO CONTRÁRIO, É RETORNADO VERDADEIRO E ESSA É UMA NOVA COORDENADA A SER INSERIDA
         }
     }
 
