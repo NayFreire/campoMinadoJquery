@@ -22,8 +22,14 @@ $(document).ready(function(){
     for(var i=0; i<colNum; i++){
         $('#matriz').append("<div class='linhas' >")
         for(var j=0; j<rowNum; j++){
+<<<<<<< HEAD
             $('.linhas').append('<div id="'+counter+'" class="slot tile_'+counter+'"></div>');
             counter++;
+=======
+          $('.linhas').append('<div id="'+counter+'" class="slot tile_'+counter+'"></div>');
+          counter++;
+          
+>>>>>>> 6dd75df9684d50073b755d7aab804bb661a48df5
         }
         j=0;
         $('#matriz').append("</div>")
