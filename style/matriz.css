@@ -37,3 +37,7 @@ html, body{
 .canto{
     border: dotted #abcd4a;
 }
+
+.ladosCantos{
+    background-color: chocolate;
+}
