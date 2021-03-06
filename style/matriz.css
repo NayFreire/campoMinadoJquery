@@ -28,5 +28,12 @@ html, body{
 
 .bomba{
     background-color: #000;
-    
+}
+
+.borda{
+    border-radius: 10px;
+}
+
+.canto{
+    border: dotted #abcd4a;
 }

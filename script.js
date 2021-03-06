@@ -54,6 +54,10 @@ $(document).ready(function(){
         console.log({bombPositions})
         VerificaSeTemDezBombas(bombPositions) //* SE, DURANTE A CRIAÇÃO DE COORDENADAS, FOR CRIADA UMA QUE SE REPETE, OUTRA SERÁ CRIADA E O ARRAY DE BOMBAS TERÁ MENOS DE 10 BOMBAS, ENTÃO É VERIFICADO SE FOI POSSÍVEL CRIAR 10 COORDENADAS 
 
+        VerificaBordas()
+
+        // VerificaCantos()
+
         function VerificaSeTemDezBombas(bombPositions){ //* 
             if(bombPositions.length == 10){
                 return true
@@ -92,6 +96,47 @@ $(document).ready(function(){
 
             return true //* CASO CONTRÁRIO, É RETORNADO VERDADEIRO E ESSA É UMA NOVA COORDENADA A SER INSERIDA
         }
+
+        function VerificaBordas(){
+            let slotsBorda = new Array('0-0', '0-1', '0-2', '0-3', '0-4', '0-5', '0-6', '0-7', '0-8',
+                                   '1-0', '2-0', '3-0', '4-0', '5-0', '6-0', '7-0', '8-0',
+                                   '8-1', '8-2', '8-3', '8-4', '8-5', '8-6', '8-7', '8-8',
+                                   '1-8', '2-8', '3-8', '4-8', '5-8', '6-8', '7-8')
+
+            var slots = new Array()
+            //slots.push($('.slot').attr('id'))
+
+            $('.slot').each(function(){
+                slots.push($(this).attr('id'))
+            })
+
+            console.log({slots})
+
+            for(i=0;i<81;i++){
+                for(j=0;j<slotsBorda.length;j++){
+                    if(slots[i]==slotsBorda[j]){
+                        $('#'+slots[i]).addClass('borda')
+                    }
+                }
+            }
+
+            VerificaCantos()
+
+            function VerificaCantos(){
+                let slotsCantos = new Array('0-0', '0-8', '8-0', '8-8')
+    
+                console.log({slotsCantos})
+
+                for(i=0;i<slotsCantos.length;i++){
+                    $('#'+slotsCantos[i]).each(function(){
+                        $(this).addClass('canto')
+                    })
+                }
+                
+            }
+        }
+
+        
     }
 
 }
