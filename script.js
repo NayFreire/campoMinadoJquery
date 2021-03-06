@@ -134,6 +134,41 @@ $(document).ready(function(){
                 }
                 
             }
+
+            CalculaCantos()
+
+            function CalculaCantos(){
+                $('.canto').click(function(){
+                    for(i=0;i<slots.length;i++){
+                        if($(this).attr('id')==slots[i]){
+                            let pos = i
+                            if(pos==0){
+                                let slotDireita = slots[pos+1]
+                                let slotAbaixo = slots[pos+9]
+                                let slotDiagonal = slots[pos+10]
+
+                                $('#'+slotDireita).addClass('ladosCantos')
+                                $('#'+slotAbaixo).addClass('ladosCantos')
+                                $('#'+slotDiagonal).addClass('ladosCantos')
+                            }
+
+                            if(pos==8){
+                                let slotEsquerda = slots[pos-1]
+                                let slotAbaixo = slots[pos+9]
+                                let slotDiagonal = slots[pos+8]
+
+                                $('#'+slotEsquerda).addClass('ladosCantos')
+                                $('#'+slotAbaixo).addClass('ladosCantos')
+                                $('#'+slotDiagonal).addClass('ladosCantos')
+                            }
+
+                            if(pos==72){
+                                
+                            }
+                        }
+                    }
+                })
+            }
         }
 
         
