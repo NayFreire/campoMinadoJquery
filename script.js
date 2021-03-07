@@ -286,8 +286,8 @@ $(document).ready(function () {
         //se a celula q possui bomba foi marcada com bandeira
         //esconde a bandeira
 
-        $("bomba").removeClass("bandeira");
-        $("#b").hide();
+        $(".bomba").removeClass("bandeira");
+        $(".bomba").children("#b").hide();
       }
     } else {
       return false;
