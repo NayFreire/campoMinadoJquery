@@ -283,6 +283,11 @@ $(document).ready(function () {
         $("#matriz").addClass("perdeu");
         alert("Você perdeu");
         $(".bomba").append("<img src='img/bomb.png' alt='bomba'/>");
+        //se a celula q possui bomba foi marcada com bandeira
+        //esconde a bandeira
+
+        $("bomba").removeClass("bandeira");
+        $("#b").hide();
       }
     } else {
       return false;
@@ -310,7 +315,10 @@ $(document).ready(function () {
 
   //quando é clicado numa celula com botão direito
   $(".slot").contextmenu(function () {
-    console.log("direito");
+    if ($("#matriz").hasClass("perdeu")) {
+      return false;
+    }
+
     //verifica se celula ainda não foi clicado
     if (!$(this).hasClass("clicado") && flagCont >= 0) {
       AdicionaRemoveBandeira($(this).attr("id"));
@@ -336,7 +344,9 @@ $(document).ready(function () {
         flagCont--;
         $(".bandeiras").html(flagCont);
         if ($("#" + id).children().length == 0) {
-          $("#" + id).append("<img src='img/bandeira.png' alt='bandeira'/>");
+          $("#" + id).append(
+            "<img id='b' src='img/bandeira.png' alt='bandeira'/>"
+          );
         } else {
           $("#" + id)
             .children("img")
