@@ -1,35 +1,50 @@
 $(document).ready(function () {
-  var colNum = 15;
-  var linhaNum = 15;
+  var colNum = 10;
+  var linhaNum = 10;
   var bombNum = colNum;
   var flagCont = bombNum;
   var celulas = 1;
 
+  IniciaJogo();
+
   function IniciaJogo() {
+    //chamando as funções em ordem
     CriaTabuleiro();
+    AdaptaBordas();
+    CriarBombas();
+    VasculhaTabuleiro();
+
+    //seta a quantidade de bandeiras restantes
+    $(".bandeiras").html(flagCont);
   }
 
-  for (var i = 0; i < colNum; i++) {
-    $("#matriz").append("<div class='linhas' id='linha" + i + "'>");
-    for (var j = 0; j < linhaNum; j++) {
-      $("#linha" + i).append(
-        '<div id="' + celulas + '" class="slot celula_' + celulas + '"></div>'
-      );
-      celulas++;
-    }
-    $("#matriz").append("</div>");
-  }
-
-  //chamando as funções em ordem
-  AdaptaBordas();
-  CriarBombas();
-
-  //calculando quantas bombas cada celula possui ao redor
-  $(".slot").each(function () {
-    if (!$(this).hasClass("bomba")) {
-      CalculaBombasAoRedor($(this).attr("id"));
-    }
+  $("#reinicia").on("click", function () {
+    window.location.reload();
   });
+
+  function CriaTabuleiro() {
+    //se exisitir tabuleiro remove
+    $("#matriz").children().remove();
+    for (var i = 0; i < colNum; i++) {
+      $("#matriz").append("<div class='linhas' id='linha" + i + "'>");
+      for (var j = 0; j < linhaNum; j++) {
+        $("#linha" + i).append(
+          '<div id="' + celulas + '" class="slot celula_' + celulas + '"></div>'
+        );
+        celulas++;
+      }
+      $("#matriz").append("</div>");
+    }
+  }
+
+  function VasculhaTabuleiro() {
+    //calculando quantas bombas cada celula possui ao redor
+    $(".slot").each(function () {
+      if (!$(this).hasClass("bomba")) {
+        CalculaBombasAoRedor($(this).attr("id"));
+      }
+    });
+  }
 
   function CriarBombas() {
     for (var i = 0; i < colNum; i++) {
@@ -253,7 +268,10 @@ $(document).ready(function () {
         //todas as celulas vazias em volta do click.
         var vizinhos = EncontrarCelulasVizinhas(idCelulaClicada);
         for (var c = 0; c < vizinhos.length; c++) {
-          MostraConteudoCelula($(".celula_" + vizinhos[c]).attr("id"));
+          //verifica cada celula vizinha exceto as marcadas com bandeiras
+          if (!$(".celula_" + vizinhos[c]).hasClass("bandeira")) {
+            MostraConteudoCelula($(".celula_" + vizinhos[c]).attr("id"));
+          }
         }
       } else {
         //se não possui um qtd_bombasor do atributo inteiro
@@ -263,31 +281,21 @@ $(document).ready(function () {
         $("#" + idCelulaClicada).addClass("ativada");
         $(".bomba").addClass("perdeu");
         $("#matriz").addClass("perdeu");
-        if (!alert("Você perdeu")) {
-          //   window.location.reload();
-        }
+        alert("Você perdeu");
+        $(".bomba").append("<img src='img/bomb.png' alt='bomba'/>");
       }
     } else {
       return false;
     }
   }
-  //seta a quantidade de bandeiras restantes
-  $(".bandeiras").html(flagCont);
 
   //função para saber oq fazer quando clica numa celula
   $(".slot").on("click", function () {
     var idCelulaClicadaD = $(this).attr("id");
-
+    console.log("E");
     //se onde foi clicado possui bandeira,
     //então remove
-    if ($(this).hasClass("bandeira")) {
-      flagCont++;
-      $(".bandeiras").html(flagCont);
-      $(this).removeClass("bandeira");
-      $("#" + id)
-        .children("img")
-        .hide();
-    } else {
+    if (!$(this).hasClass("bandeira")) {
       //se não havia bandeira então revela celula
       //   console.log($(this).attr(id));
       MostraConteudoCelula($(this).attr("id"));
@@ -327,7 +335,13 @@ $(document).ready(function () {
         $("#" + id).addClass("bandeira");
         flagCont--;
         $(".bandeiras").html(flagCont);
-        $("#" + id).append("<img src='img/bandeira.png' alt='bandeira'/>");
+        if ($("#" + id).children().length == 0) {
+          $("#" + id).append("<img src='img/bandeira.png' alt='bandeira'/>");
+        } else {
+          $("#" + id)
+            .children("img")
+            .show();
+        }
       }
     }
   }

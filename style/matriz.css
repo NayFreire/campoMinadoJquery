@@ -18,10 +18,24 @@ body {
 .linhas {
   display: flex;
 }
+.info {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.info-bandeiras {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 30px;
+}
+.info-bandeiras img {
+  height: 30px;
+}
 
 .slot {
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
   background: #bdbdbd;
   border-top: 2px solid #fff;
   border-left: 2px solid #fff;
@@ -58,14 +72,6 @@ body {
   display: none;
 }
 
-.bomba.ativada::before {
-  display: block;
-}
-
-.bomba.perdeu::before {
-  background: red;
-}
-
 .bandeiras {
   padding: 15px;
   font-size: 21px;
@@ -77,29 +83,13 @@ body {
   justify-content: center;
 }
 
-.bandeira::before {
-  content: "";
-  display: block;
-  width: 10px;
-  height: 13px;
-  position: relative;
-  top: 2px;
-  left: 0px;
-  border-right: 2px solid #000;
-  background: transparent;
-  border-radius: 0;
-  transform: none;
+.bandeira img {
+  height: 25px;
 }
 
-.bandeira::after {
-  content: "";
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 4px 8px 4px 0;
-  border-color: transparent red transparent transparent;
-  display: block;
-  position: relative;
-  top: 2px;
-  left: 2px;
+.bomba.perdeu {
+  background: red;
+}
+.ativada {
+  background-color: green;
 }
