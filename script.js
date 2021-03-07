@@ -1,9 +1,13 @@
 $(document).ready(function () {
-  var colNum = 10;
-  var linhaNum = 10;
+  var colNum = 15;
+  var linhaNum = 15;
   var bombNum = colNum;
   var flagCont = bombNum;
   var celulas = 1;
+
+  function IniciaJogo() {
+    CriaTabuleiro();
+  }
 
   for (var i = 0; i < colNum; i++) {
     $("#matriz").append("<div class='linhas' id='linha" + i + "'>");
@@ -215,7 +219,7 @@ $(document).ready(function () {
     var qtd_bombas = $("#" + idCelulaClicada).attr("qtd-bombas-vizinhas");
 
     //verifica se a pessoa ainda pode jogar
-    if ($(".matriz").hasClass("perdeu")) {
+    if ($("#matriz").hasClass("perdeu")) {
       return false;
     }
 
@@ -256,29 +260,33 @@ $(document).ready(function () {
         //na variavel qtd-bombas-vizinhas
         //então é uma bomba
         console.log("estourou");
-        $(".bomba").addClass("ativada clicada");
-        $("#i" + idCelulaClicada).addClass("perdeu");
-        $(".matriz").addClass("perdeu");
+        $("#" + idCelulaClicada).addClass("ativada");
+        $(".bomba").addClass("perdeu");
+        $("#matriz").addClass("perdeu");
         if (!alert("Você perdeu")) {
-          window.location.reload();
+          //   window.location.reload();
         }
       }
     } else {
       return false;
     }
   }
-
+  //seta a quantidade de bandeiras restantes
   $(".bandeiras").html(flagCont);
 
   //função para saber oq fazer quando clica numa celula
   $(".slot").on("click", function () {
-    console.log($(this).attr("id"));
+    var idCelulaClicadaD = $(this).attr("id");
+
     //se onde foi clicado possui bandeira,
     //então remove
     if ($(this).hasClass("bandeira")) {
       flagCont++;
       $(".bandeiras").html(flagCont);
       $(this).removeClass("bandeira");
+      $("#" + id)
+        .children("img")
+        .hide();
     } else {
       //se não havia bandeira então revela celula
       //   console.log($(this).attr(id));
@@ -297,25 +305,30 @@ $(document).ready(function () {
     console.log("direito");
     //verifica se celula ainda não foi clicado
     if (!$(this).hasClass("clicado") && flagCont >= 0) {
-      //se a celula já possui bandeira, então remove
-      if ($(this).hasClass("bandeira")) {
-        flagCont++;
-        $(".bandeiras").html(flagCont);
-        $(this).removeClass("bandeira");
-      } //se a celula ainda não possui bandeira
-      else {
-        //   if(flagCont == bombNum){
-        //     return false;
-        //   }//se não é a primeira bandeira
-        //   else {
-        if (flagCont != 0) {
-          $(this).addClass("bandeira");
-          flagCont--;
-          $(".bandeiras").html(flagCont);
-        }
-      }
+      AdicionaRemoveBandeira($(this).attr("id"));
     }
 
     return false;
   });
+
+  function AdicionaRemoveBandeira(id) {
+    //se a div já possui bandeira,então remove
+    if ($("#" + id).hasClass("bandeira")) {
+      flagCont++;
+      $(".bandeiras").html(flagCont);
+      $("#" + id).removeClass("bandeira");
+      $("#" + id)
+        .children("img")
+        .hide();
+      return false;
+    } else {
+      //se a div aind anão possui adiciona
+      if (flagCont != 0) {
+        $("#" + id).addClass("bandeira");
+        flagCont--;
+        $(".bandeiras").html(flagCont);
+        $("#" + id).append("<img src='img/bandeira.png' alt='bandeira'/>");
+      }
+    }
+  }
 });
