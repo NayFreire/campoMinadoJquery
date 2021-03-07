@@ -44,8 +44,26 @@ body {
   border-bottom: 2px solid #fff;
 }
 
-.bomba {
-  /* background: red; */
+.bomba::before {
+  content: "";
+  display: block;
+  width: 10px;
+  height: 10px;
+  background: #000;
+  /* position: absolute; */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  display: none;
+}
+
+.bomba.ativada::before {
+  display: block;
+}
+
+.bomba.perdeu::before {
+  background: red;
 }
 
 .bandeiras {
