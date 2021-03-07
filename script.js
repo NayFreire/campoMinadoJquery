@@ -4,17 +4,15 @@
 //         alert('clicado')
 //     })
 
-//     //Click para a bandeira
-//     $('.slot').contextmenu(function(){
-//         alert('bandeira')
-//     })
+    //Click para a bandeira
+    
 // })
 
 $(document).ready(function(){
     
     var colNum = 10;
     var linhaNum = 10;
-    var bombNum = (colNum * linhaNum)/10;
+    var bombNum = colNum;
     var flagCont = bombNum;
     var celulas = 1;
 
@@ -33,15 +31,17 @@ $(document).ready(function(){
 
     $('.slot').each(function(){
         CalculaBombasAoRedor($(this).attr('id'));
-        console.log("clicou")
+        
     });
+
+    $('.bandeiras').html(flagCont)
 
 
     function CriarBombas(){
         for(var i=0;i<colNum;i++){
             var bombaPos = (Math.floor(Math.random()*(colNum*linhaNum)));
-            console.log(bombaPos);
-            $('.celula_'+bombaPos).addClass('bomba').attr('qtd-bombas','bomba');
+            
+            $('.celula_'+bombaPos).addClass('bomba').attr('qtd-bombas-vizinhas','bomba');
         }
     }
 
@@ -95,7 +95,7 @@ $(document).ready(function(){
       var celulasVerificaveis = [],
 
       posCelulaClicada = parseInt(id);
-      //verifica se na celula clicada não é uma bomba, senão jogo acaba
+      //verifica se na celula clicado não é uma bomba, senão jogo acaba
         if(!$("#"+id).hasClass('bomba')){
             //topo esquerdo, apenas 3 celulas verificaveis
             if($("#"+id).hasClass('cima-esquerda-quina')){
@@ -194,16 +194,111 @@ $(document).ready(function(){
         var celulasVerificaveis = EncontrarCelulasVizinhas(id);
         
         if(!$(this).hasClass('bomba')){
-            console.log(celulasVerificaveis);
+           
 
           for(var i=0; i<celulasVerificaveis.length; i++){
             if($('.celula_'+celulasVerificaveis[i]).hasClass('bomba')){
                 contBombas++;
             }
           }
-          $("#"+id).attr('data-warning', contBombas);
+          $("#"+id).attr('qtd-bombas-vizinhas', contBombas);
         }
     }
 
+
+
+  function MostraConteudoCelula(idCelulaClicada){
+    var qtd_bombas = $("#"+idCelulaClicada).attr('qtd-bombas-vizinhas');
+    
+    //verifica se a pessoa ainda pode jogar
+    if($('.matriz').hasClass('perdeu')){
+      return false;
+    }
+
+    //verifica se a celula já foi clicado
+    if(!$("#"+idCelulaClicada).hasClass('clicado')){
+      $("#"+idCelulaClicada).addClass('clicado');
+
+        //verificando quantas bombas a celula possui ao redor
+        //para definir a cor do numero
+        if(qtd_bombas == 6 || qtd_bombas == 5 || qtd_bombas == 4 || qtd_bombas == 3){
+            $("#"+idCelulaClicada).html(qtd_bombas).css('color', 'red');
+        }else if(qtd_bombas == 2){
+            $("#"+idCelulaClicada).html(qtd_bombas).css('color', 'green');
+        }else if(qtd_bombas == 1){
+            $("#"+idCelulaClicada).html(qtd_bombas).css('color', 'black'); 
+        }else if(qtd_bombas == 0){
+            //se não possui nenhuma bomba vizinha
+            //então vasculha cada vizinho dele para verificar se esse 
+            //não possui bombas, e assim por diante, ate mostrar
+            //todas as celulas vazias em volta do click.
+            var vizinhos = EncontrarCelulasVizinhas(idCelulaClicada);
+            for(var c=0; c<vizinhos.length; c++){
+                MostraConteudoCelula($('.celula_'+vizinhos[c]).attr('id'));
+                
+            }
+        }else {
+            //se não possui um qtd_bombasor do atributo inteiro 
+            //na variavel qtd-bombas-vizinhas
+            //então é uma bomba
+            $('.bomba').addClass('ativada');
+            $(idCelulaClicada).addClass('perdeu');
+            $('.matriz').addClass('perdeu');
+        }
+    }else {
+      return false;
+    }
+    
+  }
+
+
+      //função para saber oq fazer quando clica numa celula
+      $('.slot').on("click",function(){
+        console.log( $(this).attr('id'));
+        //se onde foi clicado possui bandeira,
+        //então remove
+        if($(this).hasClass('bandeira')){
+            flagCont++;
+            $('.bandeiras').html(flagCont);
+            $(this).removeClass('bandeira')
+          }else {
+              //se não havia bandeira então revela celula
+            //   console.log($(this).attr(id));
+            MostraConteudoCelula($(this).attr('id'));
+            //se restam 10 celulas, estas devem ser bombas
+            if($('.slot').not('.clicado').length == bombNum){
+              if(!$('.matriz').hasClass('perdeu')){
+                alert('Parabéns você venceu!!!')
+              }
+            }
+          }
+      });
+
+      $('.slot').contextmenu(function(){
+        console.log("direito")
+        //verifica se celula ainda não foi clicado
+        if(!$(this).hasClass('clicado') && flagCont>0){
+            
+            //se a celula já possui bandeira, então remove
+            if($(this).hasClass('bandeira')){
+                flagCont++;
+              $('.bandeiras').html(flagCont);
+              $(this).removeClass('bandeira');
+            }//se a celula ainda não possui bandeira
+            else {
+            //   if(flagCont == bombNum){
+            //     return false;  
+            //   }//se não é a primeira bandeira
+            //   else {
+                $(this).addClass('bandeira');
+                flagCont--;
+                $('.bandeiras').html(flagCont); 
+            //   }
+               
+            }
+          }
+
+          return false;
+    })
 }
 );
