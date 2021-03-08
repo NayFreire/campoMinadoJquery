@@ -252,15 +252,15 @@ $(document).ready(function () {
       ) {
         $("#" + idCelulaClicada)
           .html(qtd_bombas)
-          .css("color", "red");
+          .css("color", "#EBCA8C");
       } else if (qtd_bombas == 2) {
         $("#" + idCelulaClicada)
           .html(qtd_bombas)
-          .css("color", "green");
+          .css("color", "#42DFBC");
       } else if (qtd_bombas == 1) {
         $("#" + idCelulaClicada)
           .html(qtd_bombas)
-          .css("color", "black");
+          .css("color", "#8B6AF5");
       } else if (qtd_bombas == 0) {
         //se não possui nenhuma bomba vizinha
         //então vasculha cada vizinho dele para verificar se esse
@@ -345,7 +345,7 @@ $(document).ready(function () {
         $(".bandeiras").html(flagCont);
         if ($("#" + id).children().length == 0) {
           $("#" + id).append(
-            "<img id='b' src='img/bandeira.png' alt='bandeira'/>"
+            "<img id='b' src='img/bandeira-de-golfe.svg' alt='bandeira'/>"
           );
         } else {
           $("#" + id)

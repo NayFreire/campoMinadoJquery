@@ -6,14 +6,18 @@ body {
   padding: 0;
   display: flex;
   justify-content: center;
+  font-family: "Roboto Mono", monospace;
+  align-items: center;
 }
 
 #main {
   display: flex;
-  width: 100%;
+  width: 40vw;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
+  background-color: rgb(167, 196, 250);
+  height: fit-content;
 }
 .linhas {
   display: flex;
@@ -22,7 +26,19 @@ body {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  background-color: coral;
+  width: 100%;
 }
+
+.info button {
+  background-color: rgb(245, 196, 140);
+  font-size: 32px;
+  font-weight: bold;
+  padding: 10px 15px;
+  border: 0;
+  border-radius: 5px;
+}
+
 .info-bandeiras {
   display: flex;
   justify-content: space-between;
@@ -33,18 +49,23 @@ body {
   height: 30px;
 }
 
+#matriz {
+  padding: 10px;
+}
+
 .slot {
   width: 30px;
   height: 30px;
-  background: #bdbdbd;
+  background: #e0e0e0;
   border-top: 2px solid #fff;
   border-left: 2px solid #fff;
-  border-right: 2px solid #747474;
-  border-bottom: 2px solid #747474;
+  border-right: 2px solid #bec5ec;
+  border-bottom: 2px solid #bec5ec;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 18px;
+  font-weight: bold;
 }
 
 .slot:hover {
@@ -52,24 +73,11 @@ body {
 }
 
 .slot.clicado {
-  border-top: 2px solid #747474;
-  border-left: 2px solid #747474;
+  border-top: 2px solid #bec5ec;
+  border-left: 2px solid #bec5ec;
   border-right: 2px solid #fff;
   border-bottom: 2px solid #fff;
-}
-
-.bomba::before {
-  content: "";
-  display: block;
-  width: 10px;
-  height: 10px;
-  background: #000;
-  /* position: absolute; */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  display: none;
+  background-color: #dddddd;
 }
 
 .bandeiras {
@@ -88,8 +96,8 @@ body {
 }
 
 .bomba.perdeu {
-  background: red;
+  background: rgb(218, 69, 69);
 }
-.ativada {
-  background-color: green;
+.bomba.ativada {
+  background-color: rgb(235, 164, 50);
 }
